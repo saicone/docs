@@ -1,0 +1,10 @@
+{
+  "version.label": {
+    "message": "Siguiente",
+    "description": "The label for version current"
+  },
+  "sidebar.rtag.category.Features": {
+    "message": "Características",
+    "description": "The label for category Features in sidebar rtag"
+  }
+}
