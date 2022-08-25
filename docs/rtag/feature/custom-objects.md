@@ -118,10 +118,10 @@ public class CustomDataSerializer implements RtagSerializer<CustomData>, RtagDes
 }
 ```
 
-The you need to register the (de)serializer into Rtag instance that are you using:
+Then you need to register the (de)serializer into Rtag instance that are you using:
 
 ```java
-Rtag rtag = // Intance from anywhere;
+Rtag rtag = // Instance from anywhere;
 CustomDataSerializer serializer = new CustomDataSerializer();
 
 rtag.putSerializer(CustomData.class, serializer);
@@ -134,7 +134,7 @@ In this example will be used an RtagItem with Rtag that have the CustomDataSeria
 
 ```java
 ItemStack item = // Item from anywhere;
-Rtag rtag = // Instancia with CustomDataSerializer;
+Rtag rtag = // Instance with CustomDataSerializer;
 
 RtagItem rtagItem = new RtagItem(rtag, item);
 

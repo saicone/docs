@@ -65,10 +65,10 @@ Entity entity = // Obtener una entidad de alguna parte;
 
 RtagEntity rtag = new RtagEntity(entity);
 // Aqui se editarán cosas que contienen las entidades en su NBTTagCompound
-rtag.set((byte) 1, "Glowing");
+rtag.set(true, "Glowing");
 // Value = "1"
 // Ruta = "HasVisualFire"
-rtag.set((byte) 1, "HasVisualFire");
+rtag.set(true, "HasVisualFire");
 
 // Cargar los cambios
 rtag.load();

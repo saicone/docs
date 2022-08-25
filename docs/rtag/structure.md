@@ -63,10 +63,10 @@ Entity entity = // Entity from anywhere;
 
 RtagEntity rtag = new RtagEntity(entity);
 // Edit vanilla tags
-rtag.set((byte) 1, "Glowing");
+rtag.set(true, "Glowing");
 // Value = "1"
 // Path = "HasVisualFire"
-rtag.set((byte) 1, "HasVisualFire");
+rtag.set(true, "HasVisualFire");
 
 // Load the changes
 rtag.load();

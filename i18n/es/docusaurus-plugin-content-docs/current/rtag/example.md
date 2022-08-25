@@ -85,7 +85,7 @@ RtagItem tag = new RtagItem(new ItemStack(Material.DIAMOND_SWORD));
 tag.set("Nombre custom", "display", "name");
 
 // Hacerlo irrompible
-tag.set((byte) 1, "Unbreakable");
+tag.set(true, "Unbreakable");
 
 // Cargar los cambios
 tag.load();
@@ -99,17 +99,17 @@ Aquí verás un ejemplo de como darle el efecto de brillo y levitación a una en
 RtagEntity tag = new RtagEntity(entity);
 
 // Hacer que brille
-tag.set((byte) 1, "Glowing");
+tag.set(true, "Glowing");
 
 // En caso de que sea un mob o jugador
 // Darle le efecto de levitación
 Map<String, Object> effect = Map.of(
-	"Ambient", (byte) 0,
-	"Amplifier", (byte) 0,
+	"Ambient", false,
+	"Amplifier", false,
 	"Duration", 200, // 10 segundos = 200 ticks
 	"Id", (byte) 25,
-	"ShowIcon", (byte) 0,
-	"ShowParticles", (byte) 1,
+	"ShowIcon", false,
+	"ShowParticles", true,
 	);
 tag.add(effect, "ActiveEffects");
 

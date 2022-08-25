@@ -23,13 +23,13 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 <Tabs>
-<TabItem value="file" label="Archivo" default>
+<TabItem value="file" label="File" default>
 
 ```java
 Object compound = // NBTTagCompound from anywhere;
 
 // Convert into File
-File file TagCompound.DATA.toFile(compound, new File("archivo.nbt"));
+File file TagCompound.DATA.toFile(compound, new File("file.nbt"));
 
 // Get from file
 Object tagCompound = TagCompound.DATA.fromFile(file);
@@ -41,7 +41,7 @@ Object tagCompound = TagCompound.DATA.fromFile(file);
 ```java
 Object compound = // NBTTagCompound from anywhere;
 
-// Convertirlo into Base64
+// Convert into Base64
 String base64 = TagCompound.DATA.toBase64(compound);
 
 // Get from Base64
@@ -57,7 +57,7 @@ Object compound = // NBTTagCompound from anywhere;
 // Convert into bytes
 byte[] bytes = TagCompound.DATA.toBytes(compound);
 
-// Get From bytes
+// Get from bytes
 Object tagCompound = TagCompound.DATA.fromBytes(bytes);
 ```
 
@@ -69,7 +69,7 @@ Object tagCompound = TagCompound.DATA.fromBytes(bytes);
 Rtag includes an easy way to convert any ItemStack into File, Base64 or bytes, useful to **save items in a database**.
 
 <Tabs>
-<TabItem value="file" label="Archivo" default>
+<TabItem value="file" label="File" default>
 
 ```java
 ItemStack item = // ItemStack from anywhere;
@@ -109,7 +109,7 @@ List<ItemStack> sameItems = ItemTagStream.INSTANCE.listFromBase64(base64);
 ```java
 ItemStack item = // ItemStack from anywhere;
 
-// Convertir into bytes
+// Convert into bytes
 byte[] bytes = ItemTagStream.INSTANCE.toBytes(item);
 
 // Get from bytes
@@ -123,6 +123,6 @@ Including cross-version support! Save an item on any version and get on any vers
 
 :::info
 
-The default ItemTagStream instance it's **only compatible** with Bukkit, if your server uses Forge it is suggested to use your own instance with Forge compatibility.
+The default ItemTagStream instance it's **only compatible** with Bukkit items, if your server uses Forge it is suggested to use your own instance with Forge compatibility.
 
 :::

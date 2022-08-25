@@ -80,12 +80,12 @@ Here an example to change item name and make it unbreakable.
 ```java
 RtagItem tag = new RtagItem(new ItemStack(Material.DIAMOND_SWORD));
 
-// Value = "Nombre custom"
+// Value = "Custom item name!"
 // Path = "display" -> "name"
 tag.set("Custom item name!", "display", "name");
 
 // Make it unbreakable
-tag.set((byte) 1, "Unbreakable");
+tag.set(true, "Unbreakable");
 
 // Load the changes
 tag.load();
@@ -99,17 +99,17 @@ Here an example to give glowing effect and levitation to entities using Rtag.
 RtagEntity tag = new RtagEntity(entity);
 
 // Make it glow
-tag.set((byte) 1, "Glowing");
+tag.set(true, "Glowing");
 
 // In case the entity its a mob or player
 // it can receive potion effects
 Map<String, Object> effect = Map.of(
-	"Ambient", (byte) 0,
-	"Amplifier", (byte) 0,
+	"Ambient", false,
+	"Amplifier", false,
 	"Duration", 200, // 10 seconds = 200 ticks
 	"Id", (byte) 25,
-	"ShowIcon", (byte) 0,
-	"ShowParticles", (byte) 1,
+	"ShowIcon", false,
+	"ShowParticles", true,
 	);
 tag.add(effect, "ActiveEffects");
 
