@@ -13,8 +13,8 @@ const config = {
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
-  organizationName: 'saicone', // Usually your GitHub org/user name.
-  projectName: 'docs', // Usually your repo name.
+  organizationName: 'saicone', // github org name.
+  projectName: 'docs', // repo name
   trailingSlash: false,
 
   i18n: {
@@ -31,7 +31,7 @@ const config = {
           routeBasePath: '/',
           sidebarPath: require.resolve('./sidebars.js'),
           // Please change this to your repo.
-          editUrl: ({ docPath }) => `https://github.com/saicone/docs/blob/master/docs/${docPath}`,
+          editUrl: ({ docPath }) => `https://github.com/saicone/docs/blob/main/docs/${docPath}`,
           showLastUpdateAuthor: true,
           showLastUpdateTime: true,
         },
