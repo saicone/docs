@@ -1,14 +1,16 @@
 ---
 sidebar_position: 5
-title: Extras
-description: Rtag extra utilities
+title: Textured Heads
+description: How to get textured heads with Rtag
 ---
 
-Rtag contains extra utilities which will be seen below.
+With the `SkullTexture` class you can get textured heads from [base64](https://en.wikipedia.org/wiki/Base64), url, texture ID, player name or UUID.
 
-## Textured Heads
+## Example
 
-With the SkullTexture class you can get textures heads from [base64](https://en.wikipedia.org/wiki/Base64), url, texture ID, player name or UUID.
+Get the following texture as `ItemStack` head using all the different methods.
+
+![](http://textures.minecraft.net/texture/fedfa2e0fdea0c0423804cdb5b62ad05a6e914c046c4a3b7e355bf81269125fd)
 
 ```mdx-code-block
 import Tabs from '@theme/Tabs';
@@ -51,13 +53,3 @@ ItemStack head = SkullTexture.getTexturedHead("7ca003dc-175f-4f1f-b490-565104531
 
 </TabItem>
 </Tabs>
-
-## ChatComponent
-
-With the ChatComponent class you can convert (json) strings into chat components!
-
-```java
-Object component = ChatComponent.fromJson("{\"bold\":true,\"italic\":false,\"underlined\":false,\"strikethrough\":false,\"obfuscated\":false,\"color\":\"dark_purple\",\"text\":\"Colored text!\"}");
-
-Object sameComponent = ChatComponent.fromString("§5§lColored text!");
-```

@@ -1,10 +1,10 @@
 ---
-sidebar_position: 5
-title: Features
-description: Additional Rtag features
+sidebar_position: 3
+title: Usage
+description: How to use Rtag
 ---
 
-Rtag has a variety of features to handle NBT and other types of data.
+Rtag primarly is used with `RtagEditor` that is extended to edit items, entities and blocks.
 
 ```mdx-code-block
 import DocCardList from '@theme/DocCardList';

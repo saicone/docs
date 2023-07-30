@@ -1,24 +1,57 @@
 ---
-sidebar_position: 1
+sidebar_position: 2
 title: Custom Objects
-description: Save and get custom objects in Rtag
+description: How to save and get custom objects in Rtag
 ---
 
-## Information
+With Rtag you can set custom objects into NBT tags and get has the required type, depends on your needs there are different options to (de)serialize objects.
 
-Rtag by default only has support for normal Java objects (String, Integer, List... etc), if you want to set and get custom objects you need to register a (de)serializer into Rtag instance.
+## Gson serializer
 
-### RtagSerializer
+By using the Gson library inside Bukkit code, it's possible to convert objets following the next process:
 
-Instance to convert a custom object into Map.
+**Serializer (set)**: Custom Object -> Json String -> Map -> NBTTagCompound
 
-### RtagDeserializer
+**Deserializer (get)**: NBTTagCompound -> Map -> Json String -> Custom Object
 
-Instance to convert a Map into a custom object.
+```java
+// Create your custom object
+MyObject myObj = ...;
 
-## Example
+// --- Using Rtag instance
+Rtag rtag = ...;
+Object compount = ...;
+// Set to "my -> object -> path"
+rtag.set(compound, myObj, "my", "object", "path");
+// Get from "my <- object <- path"
+MyObject sameObj = rtag.getOptional(compount, "my", "object", "path").as(MyObject.class);
 
-Suppose you have this custom object to save additional data in your items:
+
+// --- Using RtagEditor instance
+RtagEditor tag = ...;
+// Set to "my -> object -> path"
+tag.set(myObj, "my", "object", "path");
+// Get from "my <- object <- path"
+MyObject sameObj = tag.getOptional("my", "object", "path").as(MyObject.class);
+```
+
+## Rtag registry
+
+Rtag by default only has support for normal Java objects (String, Integer, List... etc), if you want to set and get custom objects you can register a (de)serializer into Rtag instance.
+
+**RtagSerializer**: Instance to convert a custom object into Map.
+
+**RtagDeserializer**: Instance to convert a Map into a custom object.
+
+:::info
+
+This conversion put an additional key into your saved tag to detect it using the provided ID.
+
+:::
+
+### Example
+
+Suppose you have a custom object named `CustomData` to save additional data in your items:
 
 ```java
 package my.plugin;
@@ -73,14 +106,12 @@ package my.plugin;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CustomDataSerializer implements RtagSerializer<CustomData>, RtagDeserializer<CustomData> {
+public class CustomDataConversion implements RtagSerializer<CustomData>, RtagDeserializer<CustomData> {
     
     // ID used when the object will be converted into Map.
     // CustomData -> Map
     @Override
     public String getInID() {
-        // It's suggested to use an ID with the format <plugin>:<object> to avoid
-        // incompatibility issues with other plugins 
         return "myplugin:CustomData";
     }
     
@@ -88,7 +119,6 @@ public class CustomDataSerializer implements RtagSerializer<CustomData>, RtagDes
     // Map -> CustomData
     @Override
     public String getOutID() {
-    	// Same ID from above
         return "myplugin:CustomData";
     }
 
@@ -98,61 +128,77 @@ public class CustomDataSerializer implements RtagSerializer<CustomData>, RtagDes
         Map<String, Object> map = new HashMap();
         map.put("type", data.getType());
         map.put("level", data.getLevel());
-        map.put("broken", data.isBroken());
+        // Boolean value must be saved as byte
+        map.put("broken", data.isBroken() ? (byte) 1 : (byte) 0);
         return map;
     }
     
     // Convert the Map into CustomData
     @Override
     public CustomData deserialize(Map<String, Object> map) {
-        String type = map.get("type");
-        Integer level = map.get("level");
-        Boolean broken = map.get("broken");
+        String type = (String) map.get("type");
+        Integer level = (Integer) map.get("level");
+        Byte broken = (Byte) map.get("broken");
 
         if (type == null || level == null || broken == null) {
         	return null;
         } else {
-        	return new CustomData(type, level, broken);
+        	return new CustomData(type, level, broken == (byte) 1);
         }
     }
 }
 ```
 
-Then you need to register the (de)serializer into Rtag instance that are you using:
+:::tip
+
+It's suggested to use an ID with the format `<plugin>:<object>` to avoid incompatibility issues with other plugins 
+
+:::
+
+Then you need to register the (de)serializer into used Rtag instance:
 
 ```java
-Rtag rtag = // Instance from anywhere;
-CustomDataSerializer serializer = new CustomDataSerializer();
+Rtag rtag = ...;
+CustomDataConversion serializer = new CustomDataConversion();
 
 rtag.putSerializer(CustomData.class, serializer);
 rtag.putDeserializer(serializer);
 ```
 
-Now when you use the Rtag instance with registered CustomDataSerializer, you can set and get the CustomData with simple methods.
+Now when you use the Rtag instance with registered `CustomDataConversion`, you can set and get the CustomData with simple methods.
 
-In this example will be used an RtagItem with Rtag that have the CustomDataSerializer:
+In this example will be used an RtagItem with Rtag that have the `CustomDataConversion`:
 
 ```java
-ItemStack item = // Item from anywhere;
-Rtag rtag = // Instance with CustomDataSerializer;
+private final Rtag rtag = initRtag();
 
-RtagItem rtagItem = new RtagItem(rtag, item);
+private Rtag initRtag() {
+    Rtag rtag = new Rtag();
+    CustomDataConversion serializer = new CustomDataConversion();
+    rtag.putSerializer(CustomData.class, serializer);
+    rtag.putDeserializer(serializer);
+    return rtag;
+}
 
-// -- Save custom data into ItemStack
-
-// Data for the item
-CustomData data = new CustomData("EPIC", 30, false);
-// Will be saved at path "custom" -> "data"
-rtagItem.set(data, "custom", "data");
-
-// The changes will be loaded into original item
-rtagItem.load();
-
-
-// -- Get custom data from ItemStack
-
-// The data will be retrieved from "custom" -> "data"
-CustomData itemData = rtagItem.get("custom", "data");
-// Check if it equals
-System.out.println(data.equals(itemData));
+public void example(ItemStack item) {
+    RtagItem tag = new RtagItem(rtag, item);
+    
+    // -- Save custom data into ItemStack
+    
+    // Data for the item
+    CustomData data = new CustomData("EPIC", 30, false);
+    // Save at path "custom -> data"
+    tag.set(data, "custom", "data");
+    
+    // The changes will be loaded into original item
+    tag.load();
+    
+    
+    // -- Get custom data from ItemStack
+    
+    // Get data from "custom" -> "data" without explicit conversion
+    CustomData itemData = tag.get("custom", "data");
+    // Check if it equals
+    System.out.println(data.equals(itemData));
+}
 ```

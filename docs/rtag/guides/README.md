@@ -1,10 +1,10 @@
 ---
-sidebar_position: 5
-title: Features
-description: Additional Rtag features
+sidebar_position: 6
+title: Guides
+description: Collection of guides about Rtag usage
 ---
 
-Rtag has a variety of features to handle NBT and other types of data.
+Using Rtag you can create a lot of advanced things, here a bit of those things.
 
 ```mdx-code-block
 import DocCardList from '@theme/DocCardList';

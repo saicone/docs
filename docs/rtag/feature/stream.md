@@ -1,22 +1,25 @@
 ---
-sidebar_position: 2
+sidebar_position: 4
 title: Tag Stream
-description: Convert NBT compounds into different types of data
+description: Convert NBT into different types of data and viceversa
 ---
 
 ## Information
 
 Rtag has the option to save any NBTTagCompound into different ways:
 
-*  File
-*  [Base64](https://en.wikipedia.org/wiki/Base64)
-*  Bytes
+* File
+* [Base64](https://en.wikipedia.org/wiki/Base64)
+* Bytes (`byte[]`)
+* Maps (`Map<String, Object>`)
+* String (SNBT format, also compatible with Json)
+* Readable Map (Only for items)
 
 Including compatibility with serializable objects.
 
 ## TagCompound Data
 
-The TagCompound class includes the "DATA" interface, an easy way to convert any NBTTagCompound into File, Base64 or Bytes.
+The TagCompound class includes the "DATA" interface, an easy way to convert any NBTTagCompound into File, Base64, Bytes, Map and String.
 
 ```mdx-code-block
 import Tabs from '@theme/Tabs';
@@ -26,7 +29,8 @@ import TabItem from '@theme/TabItem';
 <TabItem value="file" label="File" default>
 
 ```java
-Object compound = // NBTTagCompound from anywhere;
+// NBTTagCompound from anywhere
+Object compound = ...;
 
 // Convert into File
 File file TagCompound.DATA.toFile(compound, new File("file.nbt"));
@@ -39,7 +43,8 @@ Object tagCompound = TagCompound.DATA.fromFile(file);
 <TabItem value="base64" label="Base64">
 
 ```java
-Object compound = // NBTTagCompound from anywhere;
+// NBTTagCompound from anywhere
+Object compound = ...;
 
 // Convert into Base64
 String base64 = TagCompound.DATA.toBase64(compound);
@@ -52,7 +57,8 @@ Object tagCompound = TagCompound.DATA.fromBase64(base64)[0]; // Return array
 <TabItem value="bytes" label="Bytes">
 
 ```java
-Object compound = // NBTTagCompound from anywhere;
+// NBTTagCompound from anywhere
+Object compound = ...;
 
 // Convert into bytes
 byte[] bytes = TagCompound.DATA.toBytes(compound);
@@ -62,20 +68,54 @@ Object tagCompound = TagCompound.DATA.fromBytes(bytes);
 ```
 
 </TabItem>
+<TabItem value="map" label="Map">
+
+```java
+// NBTTagCompound from anywhere
+Object compound = ...;
+
+// Convert into map
+Map<String, Object> map = TagCompound.DATA.toMap(compound);
+
+// Get from map
+Object tagCompound = TagCompound.DATA.fromMap(map);
+```
+
+</TabItem>
+<TabItem value="string" label="String">
+
+```java
+// NBTTagCompound from anywhere
+Object compound = ...;
+
+// Convert into snbt
+String snbt = TagCompound.DATA.toString(compound);
+
+// Get from snbt
+Object tagCompound = TagCompound.DATA.fromString(snbt);
+```
+
+</TabItem>
 </Tabs>
 
 ## ItemTagStream
 
-Rtag includes an easy way to convert any ItemStack into File, Base64 or bytes, useful to **save items in a database**.
+Rtag includes an easy way to convert any ItemStack into File, Base64, Bytes, Map, String and Readable Map, useful to **save items in a database**.
+
+:::info
+
+The "readable map" format convert item name and lore into colored strings, instead of [chat component](/feature/chat-component.md) format introduced for items nbt on Minecraft 1.13, useful to save items in files and make them editable by the user without understanding chat components.
+
+:::
 
 <Tabs>
 <TabItem value="file" label="File" default>
 
 ```java
-ItemStack item = // ItemStack from anywhere;
+ItemStack item = ...;
 
-// Conver into File
-File file = ItemTagStream.INSTANCE.toFile(item, new File("archivo.nbt"));
+// Convert into File
+File file = ItemTagStream.INSTANCE.toFile(item, new File("file.nbt"));
 
 // Get from File
 ItemStack sameItem = ItemTagStream.INSTANCE.fromFile(file);
@@ -85,7 +125,7 @@ ItemStack sameItem = ItemTagStream.INSTANCE.fromFile(file);
 <TabItem value="base64" label="Base64">
 
 ```java
-ItemStack item = // ItemStack from anywhere;
+ItemStack item = ...;
 
 // Convert into Base64
 String base64 = ItemTagStream.INSTANCE.toBase64(item);
@@ -107,7 +147,7 @@ List<ItemStack> sameItems = ItemTagStream.INSTANCE.listFromBase64(base64);
 <TabItem value="bytes" label="Bytes">
 
 ```java
-ItemStack item = // ItemStack from anywhere;
+ItemStack item = ...;
 
 // Convert into bytes
 byte[] bytes = ItemTagStream.INSTANCE.toBytes(item);
@@ -117,12 +157,51 @@ ItemStack sameItem = ItemTagStream.INSTANCE.fromBytes(bytes);
 ```
 
 </TabItem>
+<TabItem value="map" label="Map">
+
+```java
+ItemStack item = ...;
+
+// Convert into map
+Map<String, Object> map = ItemTagStream.INSTANCE.toMap(item);
+
+// Get from map
+ItemStack sameItem = ItemTagStream.INSTANCE.fromMap(map);
+```
+
+</TabItem>
+<TabItem value="string" label="String">
+
+```java
+ItemStack item = ...;
+
+// Convert into snbt
+String snbt = ItemTagStream.INSTANCE.toString(item);
+
+// Get from snbt
+ItemStack sameItem = ItemTagStream.INSTANCE.fromString(snbt);
+```
+
+</TabItem>
+<TabItem value="readable" label="Readable">
+
+```java
+ItemStack item = ...;
+
+// Convert into readable map
+Map<String, Object> map = ItemTagStream.INSTANCE.toReadableMap(item);
+
+// Get from readable map
+ItemStack sameItem = ItemTagStream.INSTANCE.fromReadableMap(map);
+```
+
+</TabItem>
 </Tabs>
 
-Including cross-version support! Save an item on any version and get on any version without compatibility problems. Materials, enchantments, potions... etc, all will be converted!
+Including **cross-version support**! Save an item on any version and get on any version without compatibility problems. Materials, enchantments, potions... etc, all will be converted!
 
-:::info
+:::caution Current limitations
 
-The default ItemTagStream instance it's **only compatible** with Bukkit items, if your server uses Forge it is suggested to use your own instance with Forge compatibility.
+The default ItemTagStream instance it's **only compatible** with Bukkit items, if your server uses Forge it is suggested to use your own instance of ItemTagStream with Forge compatibility.
 
 :::
