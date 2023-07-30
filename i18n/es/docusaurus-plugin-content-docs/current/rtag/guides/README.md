@@ -1,10 +1,10 @@
 ---
-sidebar_position: 5
-title: Características
-description: Opciones extra que ofrece Rtag
+sidebar_position: 6
+title: Guías
+description: Colección de guías sobre como utilizar Rtag
 ---
 
-Rtag tiene una variedad de opciones para manejar los NBTTagCompound.
+Usando Rtag puedes crear una gran cantidad de cosas avanzadas, aquí una pequeña muestra de esas cosas.
 
 ```mdx-code-block
 import DocCardList from '@theme/DocCardList';

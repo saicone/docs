@@ -1,10 +1,10 @@
 ---
-sidebar_position: 5
-title: Características
-description: Opciones extra que ofrece Rtag
+sidebar_position: 4
+title: Avanzado
+description: Información avanzada sobre Rtag
 ---
 
-Rtag tiene una variedad de opciones para manejar los NBTTagCompound.
+Para más información sobre Rtag, puedes visitar las siguientes páginas.
 
 ```mdx-code-block
 import DocCardList from '@theme/DocCardList';

@@ -1,24 +1,57 @@
 ---
-sidebar_position: 1
+sidebar_position: 2
 title: Objectos custom
-description: Guarda y obtén objetos custom con Rtag
+description: Como guardar y obtener objetos custom con Rtag
 ---
 
-## Información
+Con Rtag puedes establecer objetos custom como NBT y obtenerlos según el tipo de objeto requerido, dependiendo en tus necesdiades existen diferentes opciones para (de)serializar objetos.
 
-Rtag por defecto solo soporta objetos normales de Java (String, Integer, List... etc), pero también tiene la opción de registrar serializadores de objetos haciendo posible su almacenamiento en un NBTTagCompound.
+## Serializador Gson
 
-### RtagSerializer
+Al usar la librería Gson dentro del código de Bukkit, es posible (de)serializar objetos mediante el siguiente proceso:
 
-Es la instancia que funciona para convertir tu objeto custom en un Map, en otras palabras, designar cada field del objeto como un value con su respectiva key.
+**Serializer (establecer)**: Objeto custom -> String en Json -> Map -> NBTTagCompound
 
-### RtagDeserializer
+**Deserializer (obtener)**: NBTTagCompound -> Map -> String en Json -> Objeto custom
 
-Es la instancia para convertir un Map en tu objeto custom, suponiendo que este fue serializado en un Map, ahora hay que revertir ese proceso.
+```java
+// Crear tu objeto custom
+MyObject myObj = ...;
 
-## Ejemplo
+// --- Obtenerlo desde una instancia de Rtag
+Rtag rtag = ...;
+Object compount = ...;
+// Establecer en "my -> object -> path"
+rtag.set(compound, myObj, "my", "object", "path");
+// Obtener desde "my <- object <- path"
+MyObject sameObj = rtag.getOptional(compount, "my", "object", "path").as(MyObject.class);
 
-Primeramente, supongamos que tienes este objeto custom para guardar data adicional en los items:
+
+// --- Obtenerlo desde una instancia de RtagEditor
+RtagEditor tag = ...;
+// Establecer en "my -> object -> path"
+tag.set(myObj, "my", "object", "path");
+// Obtener desde "my <- object <- path"
+MyObject sameObj = tag.getOptional("my", "object", "path").as(MyObject.class);
+```
+
+## Registro en Rtag
+
+Rtag por defecto solo tiene soporte con objetos normales de Java (String, Integer, List... etc), si quieres establecer y obtener objetos custom puedes registrar un (de)serializador en la instancia de Rtag.
+
+**RtagSerializer**: Instancia para convertir el objeto custom en un Map.
+
+**RtagDeserializer**: Instancia para converir el Map en un objeto custom.
+
+:::info
+
+Esta conversión establece un key adicional en el tag guardado para detectarlo usando el ID proporcionado.
+
+:::
+
+### Ejemplo
+
+Supongamos que tienes un objeto custom llamado `CustomData` para guardar datos adicionales en tus items:
 
 ```java
 package my.plugin;
@@ -79,8 +112,6 @@ public class CustomDataSerializer implements RtagSerializer<CustomData>, RtagDes
     // CustomData -> Map
     @Override
     public String getInID() {
-        // Se sugiere usar un ID con el formado de <plugin>:<objeto> para evitar
-        // incompatibilidad con otros plugins
         return "myplugin:CustomData";
     }
     
@@ -88,7 +119,6 @@ public class CustomDataSerializer implements RtagSerializer<CustomData>, RtagDes
     // Map -> CustomData
     @Override
     public String getOutID() {
-    	// Mismo ID que el de arriba
         return "myplugin:CustomData";
     }
 
@@ -118,41 +148,56 @@ public class CustomDataSerializer implements RtagSerializer<CustomData>, RtagDes
 }
 ```
 
+:::tip
+
+Se sugiere usar un ID con el formado de `<plugin>:<objeto>` para evitar incompatibilidad con otros plugins.
+
+:::
+
 Luego debes registrar el class en la instancia de Rtag que estás utilizando:
 
 ```java
-Rtag rtag = // Instancia de Rtag de alguna parte;
+Rtag rtag = ...;
 CustomDataSerializer serializer = new CustomDataSerializer();
 
 rtag.putSerializer(CustomData.class, serializer);
 rtag.putDeserializer(serializer);
 ```
 
-Ahora al utilizar la instancia de Rtag donde registraste el CustomDataSerializer podrás guardar y almacenar el objeto de CustomData.
+Ahora al utilizar la instancia de Rtag donde registraste el `CustomDataSerializer` podrás guardar y almacenar el objeto de CustomData.
 
-En este ejemplo se usará un RtagItem con la instancia de Rtag que tiene registrado el CustomDataSerializer:
+En este ejemplo se usará un RtagItem con la instancia de Rtag que tiene registrado el `CustomDataSerializer`:
 
 ```java
-ItemStack item = // Item de alguna parte;
-Rtag rtag = // Instancia de Rtag con el CustomDataSerializer;
+private final Rtag rtag = initRtag();
 
-RtagItem rtagItem = new RtagItem(rtag, item);
+private Rtag initRtag() {
+    Rtag rtag = new Rtag();
+    CustomDataConversion serializer = new CustomDataConversion();
+    rtag.putSerializer(CustomData.class, serializer);
+    rtag.putDeserializer(serializer);
+    return rtag;
+}
 
-// -- Guardar la data custom en el item
-
-// Data custom para el item
-CustomData data = new CustomData("EPIC", 30, false);
-// Se guardará en la ruta "custom" -> "data"
-rtagItem.set(data, "custom", "data");
-
-// Se cargan los cambios en el item original
-rtagItem.load();
-
-
-// -- Obtener la data custom del item
-
-// Se obtiene desde la ruta guardada "custom" -> "data"
-CustomData itemData = rtagItem.get("custom", "data");
-// Se compara si la data es igual
-System.out.println(data.equals(itemData));
+public void example(ItemStack item) {
+    RtagItem tag = new RtagItem(rtag, item);
+    
+    // -- Guardar data custom en el ItemStack
+    
+    // Data para el item
+    CustomData data = new CustomData("EPIC", 30, false);
+    // Establecer en la ruta "custom -> data"
+    tag.set(data, "custom", "data");
+    
+    // Los cambios serán cargados en el item original
+    tag.load();
+    
+    
+    // -- Obtener la data custom desde un ItemStack
+    
+    // Obtener la data desde "custom" -> "data" sin una conversión explícita
+    CustomData itemData = tag.get("custom", "data");
+    // Revisar si son iguales
+    System.out.println(data.equals(itemData));
+}
 ```

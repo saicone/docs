@@ -1,10 +1,10 @@
 ---
-sidebar_position: 5
-title: Características
-description: Opciones extra que ofrece Rtag
+sidebar_position: 3
+title: Usar Rtag
+description: Como utilizar Rtag
 ---
 
-Rtag tiene una variedad de opciones para manejar los NBTTagCompound.
+Rtag principalmente es utilizado con el `RtagEditor` que está extendido para editar items, entidades y bloques.
 
 ```mdx-code-block
 import DocCardList from '@theme/DocCardList';
