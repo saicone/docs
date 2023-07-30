@@ -15,7 +15,7 @@ const config = {
   favicon: 'img/favicon.ico',
   organizationName: 'saicone', // github org name.
   projectName: 'docs', // repo name
-  trailingSlash: false,
+  trailingSlash: true,
 
   i18n: {
     defaultLocale: 'en',
