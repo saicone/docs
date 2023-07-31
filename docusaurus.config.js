@@ -66,7 +66,7 @@ const config = {
             position: 'left',
           },
           {
-            href: 'https://discord.saicone.com',
+            href: 'https://saic.one/discord',
             'aria-label': 'Discord',
             position: 'right',
             className: 'header-icon-link header-discord-link',
@@ -96,7 +96,7 @@ const config = {
             items: [
               {
                 label: 'Discord',
-                href: 'https://discord.saicone.com',
+                href: 'https://saic.one/discord',
               },
             ],
           },
@@ -106,6 +106,10 @@ const config = {
               {
                 label: 'GitHub',
                 href: 'https://github.com/saicone',
+              },
+              {
+                label: 'Javadoc',
+                href: 'https://javadoc.saicone.com',
               },
             ],
           },
@@ -119,9 +123,16 @@ const config = {
           "javastacktrace",
           "kotlin",
           "properties",
+          "yaml",
         ],
         theme: lightCodeTheme,
         darkTheme: darkCodeTheme,
+      },
+      algolia: {
+        appId: 'S4RBI9VFOJ',
+        apiKey: '9b1a230555dbb6a03c4472501bad05fa',
+        indexName: 'saicone',
+        contextualSearch: true,
       },
     }),
 };
