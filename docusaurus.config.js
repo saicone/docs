@@ -30,8 +30,11 @@ const config = {
         docs: {
           routeBasePath: '/',
           sidebarPath: require.resolve('./sidebars.js'),
-          // Please change this to your repo.
-          editUrl: ({ docPath }) => `https://github.com/saicone/docs/blob/main/docs/${docPath}`,
+          editUrl: ({ docPath, locale }) => {
+            let index = docPath.indexOf('/');
+            let localePath = locale == 'en' ? 'default' : locale;
+            return `https://github.com/saicone/${docPath.substring(0, index)}/blob/main/docs/${localePath}${docPath.substring(index)}`;
+          },
           showLastUpdateAuthor: true,
           showLastUpdateTime: true,
         },
