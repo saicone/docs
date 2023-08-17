@@ -22,28 +22,36 @@ Ezlib ezlib = new Ezlib();
 // También puedes crear la instancia especificando el path
 Ezlib ezlib = new Ezlib(new File("folder/path"));
 
-// Cargar una dependencia desde el repositorio de Maven (por defecto)
-ezlib.load("commons-io:commons-io:2.11.0");
+// Cargar ezlib
+ezlib.init();
+
+// Cargar una dependencia en un class loader menor
+ezlib.dependency("commons-io:commons-io:2.11.0").load();
 
 // Cargar una dependencia desde un repositorio en específico
-ezlib.load("com.saicone.rtag:rtag:1.1.0", "https://jitpack.io/");
+ezlib.dependency("com.saicone.rtag:rtag:1.3.0").repository("https://jitpack.io/").load();
 
 // Tambien puedes cambiar el repositoria por defecto
 ezlib.setDefaultRepository("URL de repositorio");
 ```
 
-## Parent ClassLoader
+## ClassLoader principal
 
-Ezlib permite cargar la dependencias en el parent class loader actual, solamente añadiendo "true" al final del método load.
+Ezlib permite cargar la dependencias en el class loader actual o principal y especificar el repositorio antes del metodo de cargar.
 
 ```java
 Ezlib ezlib = new Ezlib();
+// Cargar ezlib
+ezlib.init();
 
-// Cargar desde el repositorio de Maven (por defecto)
-ezlib.load("commons-io:commons-io:2.11.0", true);
+// Cargar una dependencia en el class loader actual o principal
+ezlib.dependency("commons-io:commons-io:2.11.0").parent(true).load();
 
 // Cargar desde un repositorio en específico
-ezlib.load("com.saicone.rtag:rtag:1.1.0", "https://jitpack.io/", true);
+ezlib.dependency("com.saicone.rtag:rtag:1.1.0")
+        .repository("https://jitpack.io/")
+        .parent(false)
+        .load();
 ```
 
 ## Recolocación
@@ -61,15 +69,16 @@ relocations.put("org.slf4j", "myproject.path.libs.slf4j");
 relocations.put("redis.clients.jedis", "myproject.path.libs.jedis");
 
 Ezlib ezlib = new Ezlib();
+ezlib.init();
 
 // Cargar primero todas las librerías necesarias
-ezlib.load("com.google.gson:gson:2.8.9", relocations, true);
-ezlib.load("org.apache.commons:commons-pool2:2.11.1", relocations, true);
-ezlib.load("org.json:json:20211205", relocations, true);
-ezlib.load("org.slf4j:slf4j-api:1.7.32", relocations, true);
+ezlib.dependency("com.google.gson:gson:2.8.9").relocations(map).parent(true).load();
+ezlib.dependency("org.apache.commons:commons-pool2:2.11.1").relocations(map).parent(true).load();
+ezlib.dependency("org.json:json:20211205").relocations(map).parent(true).load();
+ezlib.dependency("org.slf4j:slf4j-api:1.7.32").relocations(map).parent(true).load();
 
 // Luego cargar la librería de Redis
-ezlib.load("redis.clients:jedis:4.2.2", relocations, true);
+ezlib.dependency("redis.clients:jedis:4.2.2").relocations(map).parent(true).load();
 ```
 
 :::warning

@@ -30,12 +30,31 @@ import TabItem from '@theme/TabItem';
 <TabItem value="groovy" label="build.gradle" default>
 
 ```groovy
+plugins {
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
+}
+
 repositories {
     maven { url 'https://jitpack.io' }
 }
 
+// Usar solo ezlib
 dependencies {
     implementation 'com.saicone.ezlib:ezlib:VERSION'
+}
+
+// Usar ezlib loader
+dependencies {
+    implementation 'com.saicone.ezlib:loader:VERSION'
+    // Usar los annotations
+    compileOnly 'com.saicone.ezlib:annotations:VERSION'
+    annotationProcessor 'com.saicone.ezlib:annotations:VERSION'
+}
+
+jar.dependsOn (shadowJar)
+
+shadowJar {
+    relocate 'com.saicone.ezlib', project.group + '.ezlib'
 }
 ```
 
@@ -43,12 +62,35 @@ dependencies {
 <TabItem value="kotlin" label="build.gradle.kts">
 
 ```kotlin
+plugins {
+    id("com.github.johnrengelman.shadow") version "8.1.1"
+}
+
 repositories {
     maven("https://jitpack.io")
 }
 
+// Usar solo ezlib
 dependencies {
     implementation("com.saicone.ezlib:ezlib:VERSION")
+}
+
+// Usar ezlib loader
+dependencies {
+    implementation("com.saicone.ezlib:loader:VERSION")
+    // Usar los annotations
+    compileOnly("com.saicone.ezlib:annotations:VERSION")
+    annotationProcessor("com.saicone.ezlib:annotations:VERSION")
+}
+
+tasks {
+    jar {
+        dependsOn(tasks.shadowJar)
+    }
+
+    shadowJar {
+        relocate("com.saicone.ezlib", "${project.group}.ezlib")
+    }
 }
 ```
 
@@ -61,16 +103,61 @@ dependencies {
         <id>Jitpack</id>
         <url>https://jitpack.io</url>
     </repository>
-</repositories>
-  
+</ repositories>
+
 <dependencies>
+    <!-- Usar ezlib -->
     <dependency>
         <groupId>com.saicone.ezlib</groupId>
         <artifactId>ezlib</artifactId>
         <version>VERSION</version>
         <scope>compile</scope>
     </dependency>
+    <!-- Usar ezlib loader -->
+    <dependency>
+        <groupId>com.saicone.ezlib</groupId>
+        <artifactId>loader</artifactId>
+        <version>VERSION</version>
+        <scope>compile</scope>
+    </dependency>
+    <!-- Usar los annotations -->
+    <dependency>
+        <groupId>com.saicone.ezlib</groupId>
+        <artifactId>annotations</artifactId>
+        <version>VERSION</version>
+        <scope>provided</scope>
+    </dependency>
 </dependencies>
+
+<build>
+    <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>3.3.0</version>
+        <configuration>
+            <artifactSet>
+                <includes>
+                    <include>com.saicone.ezlib:ezlib</include>
+                    <include>com.saicone.ezlib:loader</include>
+                </includes>
+            </artifactSet>
+            <relocations>
+                <relocation>
+                    <pattern>com.saicone.ezlib</pattern>
+                    <shadedPattern>${project.groupId}.ezlib</shadedPattern>
+                </relocation>
+            </relocations>
+        </configuration>
+        <executions>
+            <execution>
+                <phase>package</phase>
+                <goals>
+                    <goal>shade</goal>
+                </goals>
+            </execution>
+        </executions>
+    </plugin>
+</build>
 ```
 
 </TabItem>
