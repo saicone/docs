@@ -17,6 +17,17 @@ Rtag has the option to save any NBTTagCompound into different ways:
 
 Including compatibility with serializable objects.
 
+:::info Supported serialization formats
+
+Any byte array serialization (probably saved as Base64) is compatible if it's made by the following methods:
+
+1. Using `BukkitObjectInputStream` to save objects as type object or `byte[]`.
+2. Using `NBTCompressedStreamTools` to save objects as `NBTTagCompound`, `NBTTagList` or `NBTTagByteArray` inside bytes.
+3. NBT objects saved with GZIP format.
+4. NBT objects saved inside other NBT object (like nbt list or byte array).
+
+:::
+
 ## TagCompound Data
 
 The TagCompound class includes the "DATA" interface, an easy way to convert any NBTTagCompound into File, Base64, Bytes, Map and String.
@@ -199,6 +210,8 @@ ItemStack sameItem = ItemTagStream.INSTANCE.fromReadableMap(map);
 </Tabs>
 
 Including **cross-version support**! Save an item on any version and get on any version without compatibility problems. Materials, enchantments, potions... etc, all will be converted!
+
+It also detects items serialized by Bukkit or Paper that adds data version tag as `DataVersion` or `v` to apply the conversion.
 
 :::caution Current limitations
 

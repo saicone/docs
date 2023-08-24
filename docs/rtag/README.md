@@ -23,6 +23,8 @@ tag.set(40, "someKey");
 // Including compatibility with any type of object like MyObject
 MyObject myobject = new MyObject();
 tag.set(myobject, "any", "path");
+// Merge values into tag
+tag.merge(Map.of("asd", 123, "someKey", 41), true);
 
 // So you can add lists
 tag.set(new ArrayList(), "list", "path");
@@ -394,7 +396,7 @@ ItemStack head = SkullTexture.getTexturedHead("7ca003dc-175f-4f1f-b490-565104531
 
 With [ChatComponent class](feature/chat-component/) you can convert (json) strings into chat components and viceversa.
 
-````java
+```java
 // To component
 Object component = ChatComponent.fromJson("{\"bold\":true,\"italic\":false,\"color\":\"dark_purple\",\"text\":\"Colored text!\"}");
 Object sameComponent = ChatComponent.fromString("§5§lColored text!");
@@ -406,4 +408,20 @@ String string = ChatComponent.toString(component);
 // Cross-compatibility
 String json = ChatComponent.toJson("§5§lColored text!");
 String string = ChatComponent.toString("{\"bold\":true,\"italic\":false,\"color\":\"dark_purple\",\"text\":\"Colored text!\"}");
+```
+
+Including pretty nbt formatter to colorize nbt tags like `/data` Minecraft command.
+
+```java
+Object nbt = ...;
+
+// Pretty format into chat component
+Object component = ChatComponent.toPrettyComponent(nbt, null);
+// Into json with 2 spaces as indent
+String json = ChatComponent.toPrettyJson(nbt, "  ");
+// Into colored string
+String colored = ChatComponent.toPrettyString(nbt, null);
+
+// Using other color palette (You can use your own one)
+String colored = ChatComponent.toPrettyString(nbt, null, ChatComponent.NBT_PALETTE_BUNGEE);
 ```
