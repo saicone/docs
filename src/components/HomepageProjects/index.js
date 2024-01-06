@@ -35,6 +35,26 @@ const ProjectList = [
       </Translate>
     ),
   },
+  {
+    page: '/delivery4j',
+    title: 'Delivery4j',
+    Svg: require('@site/static/img/noimage.svg').default,
+    description: (
+      <Translate id="homepage.projects.delivery4j.desc">
+        Java library wrapper for different data delivery concepts.
+      </Translate>
+    ),
+  },
+  {
+    page: '/mcode',
+    title: 'Mcode',
+    Svg: require('@site/static/img/noimage.svg').default,
+    description: (
+      <Translate id="homepage.projects.mcode.desc">
+        Framework for multi-platform Minecraft plugin
+      </Translate>
+    ),
+  },
 ];
 
 function Project({page, Svg, title, description}) {

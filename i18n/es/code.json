@@ -17,6 +17,12 @@
   "homepage.projects.uclansync.desc": {
     "message": "Addon de UltimateClans para sincronizar la data de los clanes en varios servidores."
   },
+  "homepage.projects.delivery4j.desc": {
+    "message": "Wrapper de librerias de Java para tranferir datos utilizando distintos conceptos."
+  },
+  "homepage.projects.mcode.desc": {
+    "message": "Framework multi-plataforma para plugins de Minecraft."
+  },
   "theme.ErrorPageContent.title": {
     "message": "This page crashed.",
     "description": "The title of the fallback page when the page crashed"
