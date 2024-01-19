@@ -20,6 +20,9 @@
   "homepage.projects.delivery4j.desc": {
     "message": "Wrapper de librerias de Java para tranferir datos utilizando distintos conceptos."
   },
+  "homepage.projects.settings.desc": {
+    "message": "Librería de Java para interpretar múltiples formatos de datos como configuraciones flexibles."
+  },
   "homepage.projects.mcode.desc": {
     "message": "Framework multi-plataforma para plugins de Minecraft."
   },

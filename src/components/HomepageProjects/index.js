@@ -46,6 +46,16 @@ const ProjectList = [
     ),
   },
   {
+    page: '/settings',
+    title: 'Settings',
+    Svg: require('@site/static/img/noimage.svg').default,
+    description: (
+      <Translate id="homepage.projects.settings.desc">
+        Java library to interpret multiple data formats as flexible configuration.
+      </Translate>
+    ),
+  },
+  {
     page: '/mcode',
     title: 'Mcode',
     Svg: require('@site/static/img/noimage.svg').default,
