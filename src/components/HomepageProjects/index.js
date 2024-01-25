@@ -61,7 +61,17 @@ const ProjectList = [
     Svg: require('@site/static/img/noimage.svg').default,
     description: (
       <Translate id="homepage.projects.mcode.desc">
-        Framework for multi-platform Minecraft plugin
+        Framework for multi-platform Minecraft plugin.
+      </Translate>
+    ),
+  },
+  {
+    page: '/pixelbuy',
+    title: 'PixelBuy',
+    Svg: require('@site/static/img/noimage.svg').default,
+    description: (
+      <Translate id="homepage.projects.pixelbuy.desc">
+        Free plugin for donation system based on WooMinecraft.
       </Translate>
     ),
   },

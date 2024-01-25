@@ -26,6 +26,9 @@
   "homepage.projects.mcode.desc": {
     "message": "Framework multi-plataforma para plugins de Minecraft."
   },
+  "homepage.projects.pixelbuy.desc": {
+    "message": "Plugin gratis para un sistema de donaciones basado en WooMinecraft."
+  },
   "theme.ErrorPageContent.title": {
     "message": "This page crashed.",
     "description": "The title of the fallback page when the page crashed"
