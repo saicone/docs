@@ -1,10 +1,18 @@
-import React from 'react';
+import type {ReactNode} from 'react';
 import clsx from 'clsx';
 import Link from '@docusaurus/Link';
+import Heading from '@theme/Heading';
 import styles from './styles.module.css';
 import Translate from '@docusaurus/Translate';
 
-const ProjectList = [
+type ProjectItem = {
+  page: string;
+  title: string;
+  Svg: React.ComponentType<React.ComponentProps<'svg'>>;
+  description: ReactNode;
+};
+
+const ProjectList: ProjectItem[] = [
   {
     page: '/rtag',
     title: 'Rtag',
@@ -77,7 +85,7 @@ const ProjectList = [
   },
 ];
 
-function Project({page, Svg, title, description}) {
+function Project({page, title, Svg, description}: ProjectItem) {
   return (
     <div className={clsx('col col--4')}>
       <Link to={page}>
@@ -86,14 +94,14 @@ function Project({page, Svg, title, description}) {
       </div>
       </Link>
       <div className="text--center padding-horiz--md">
-        <h3>{title}</h3>
+        <Heading as="h3">{title}</Heading>
         <p>{description}</p>
       </div>
     </div>
   );
 }
 
-export default function HomepageProjects() {
+export default function HomepageProjects(): ReactNode {
   return (
     <section className={styles.projects}>
       <div className="container">

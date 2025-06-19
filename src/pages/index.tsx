@@ -1,20 +1,21 @@
-import React from 'react';
+import type {ReactNode} from 'react';
 import clsx from 'clsx';
-import Layout from '@theme/Layout';
-import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
-import styles from './index.module.css';
+import Layout from '@theme/Layout';
 import HomepageProjects from '@site/src/components/HomepageProjects';
+import Heading from '@theme/Heading';
 import Translate from '@docusaurus/Translate';
+
+import styles from './index.module.css';
 
 function HomepageHeader() {
   const {siteConfig} = useDocusaurusContext();
   return (
     <header className={clsx('hero hero--primary', styles.heroBanner)}>
       <div className="container">
-        <h1 className="hero__title">
+        <Heading as="h1" className="hero__title">
           <Translate id="homepage.header.title">Saicone Documentation</Translate>
-        </h1>
+        </Heading>
         <p className="hero__subtitle">
           <Translate id="homepage.header.subtitle">Information about saicone projects</Translate>
         </p>
@@ -23,7 +24,7 @@ function HomepageHeader() {
   );
 }
 
-export default function Home() {
+export default function Home(): ReactNode {
   const {siteConfig} = useDocusaurusContext();
   return (
     <Layout
@@ -34,9 +35,9 @@ export default function Home() {
         <div className="container text--center margin-top--xl">
           <div className="row">
             <div className="col">
-              <h2>
+              <Heading as="h2">
                 <Translate id="homepage.projects.title">Projects</Translate>
-              </h2>
+              </Heading>
             </div>
           </div>
         </div>
