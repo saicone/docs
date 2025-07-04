@@ -140,6 +140,7 @@ const config: Config = {
         "kotlin",
         "properties",
         "yaml",
+        "json5",
       ],
       theme: prismThemes.github,
       darkTheme: prismThemes.dracula,
